@@ -70,7 +70,8 @@ function input_list() {
 	
 	//post(index);
 	
-	input[index[0]](n);
+	//input[index[0]](n);
+	input();
 }
 
 function output() {

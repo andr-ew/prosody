@@ -32,6 +32,8 @@ Toggle.prototype.look = function(x, y, z) {
 				var last = this.v;
 				this.v = Math.abs(this.v - 1)
 				this.event(this.v, last);
+				
+				return 1;
 			}
 		}
 	}
@@ -49,6 +51,8 @@ Momentary.prototype.look = function(x, y, z) {
 			var v = z
 			this.event(v);
 			this.v = v;
+			
+			return 1;
 		}
 	}
 }
@@ -87,6 +91,8 @@ Value.prototype.look = function(x, y, z) {
 						var v = i;
 						this.event(v);
 						this.v = v;
+						
+						return 1;
 					}
 				}
 			}
@@ -98,6 +104,8 @@ Value.prototype.look = function(x, y, z) {
 						var v = i;
 						this.event(v);
 						this.v = v;
+						
+						return 1;
 					}
 				}
 			}
@@ -157,6 +165,8 @@ Toggles.prototype.look = function(x, y, z) {
 						}
 						
 						this.event(this.v, last, added, removed);
+						
+						return 1;
 					}
 				}
 			}
@@ -184,6 +194,8 @@ Toggles.prototype.look = function(x, y, z) {
 						}
 						
 						this.event(this.v, last, added, removed);
+						
+						return 1;
 					}
 				}
 			}
@@ -220,6 +232,8 @@ Momentaries.prototype.look = function(x, y, z) {
 						}
 						
 						this.event(this.v, last, added, removed);
+						
+						return 1;
 					}
 				}
 			}
@@ -245,6 +259,8 @@ Momentaries.prototype.look = function(x, y, z) {
 						}
 						
 						this.event(this.v, last, added, removed);
+						
+						return 1;
 					}
 				}
 			}
@@ -312,7 +328,11 @@ Crossfader.prototype.draw = function(g) {
 	}
 }
 
-var Pattern = function(b, f, pg) {
+var Pattern = function(v, p, b, pg, f) {
+	Toggle.call(this, v, p, b, pg);
+	
+	this.ispattern = 1;
+
 	var time = 0;
 	var r = 0;
 	
@@ -322,16 +342,14 @@ var Pattern = function(b, f, pg) {
 		if(time > 0) {
 			for(t in pattern) {
 				if(pg() && (arguments.callee.task.iterations % time) == t) {
-					f.apply(null, pattern[t]);
+					f.apply(null, pattern[t]); //---------
 				}
 			}
 		}
 	}, this);
 	task.interval = 1;
 	
-	var b = b;
-	
-	b.event = function(v, last) {
+	this.event = function(v, last) {
 		if(last == 2) {
 			this.v = 0;
 			
@@ -352,11 +370,15 @@ var Pattern = function(b, f, pg) {
 			r = 1;
 			task.repeat();
 		}
+		
+		this.draw(g);
 	}
 	
-	this.look = function() {
-		if(pg() && r && !(arguments[0] == b.p[0] && arguments[1] == b.p[1])) {
+	this.store = function(j, k, v) {
+		if(r) {
 			pattern[task.iterations] = arguments;
 		}
 	}
 }
+
+Pattern.prototype = Object.create(Toggle.prototype);

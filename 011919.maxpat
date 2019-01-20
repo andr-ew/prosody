@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 219.0, 288.0, 714.0, 532.0 ],
+		"rect" : [ 210.0, 109.0, 714.0, 532.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 10.0,
@@ -38,6 +38,17 @@
 		"style" : "irv",
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-11",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 290.0, 166.0, 33.0, 19.0 ],
+					"text" : "print"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-8",
 					"maxclass" : "newobj",
@@ -166,7 +177,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-2", 0 ],
+					"destination" : [ "obj-11", 0 ],
 					"order" : 0,
 					"source" : [ "obj-3", 0 ]
 				}
@@ -203,8 +214,8 @@
 			}
 , 			{
 				"name" : "script.js",
-				"bootpath" : "~/Documents/code/prosody",
-				"patcherrelativepath" : ".",
+				"bootpath" : "~/Documents/Max 8/Max for Live Devices/anaphora Project/code",
+				"patcherrelativepath" : "../../Max 8/Max for Live Devices/anaphora Project/code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}

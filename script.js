@@ -9,121 +9,100 @@ var g = grid.connect();
 var LO = 7;
 var HI = 11;
 
-var page = [0, 0];
-var kpage = 0;
-
 var pages = [];
+var page = 0;
+
 var patterns = [];
 
-var tracks = [];
+var nav = new Value(0, [15, [0, 1, 2, 3, 4, 5, 6, 7]], [[0, 0, 0, 0, 0, 0, 0, 0], HI], function() { return 1; });
+nav.event = function(v) {
+	page = v;
+	redraw();
+}
 
-var controls = [];
-
-var update = function(x, y, z) {
-	for(i in controls) {
-		if(controls[i].look) controls[i].look(x, y, z);
-		if(controls[i].draw) controls[i].draw(g);
+var update = function(j, k, v) {
+	for(var i = 0; i < pages.length; i++) {
 		
-		output(i, controls[i].v);
+		if(pages[i][j] != null) {
+			if (pages[i][j][k].v != v) {
+				pages[i][j][k].v = v;
+				
+				output(j, k, pages[i][j][k].v);
+			}
+			
+			pages[i][j][k].draw(g);
+			
+			g.refresh();
+		}
 	}
-	
-	for(i in tracks[y % 4]) {
-		if(tracks[y % 4][i].look) tracks[y % 4][i].look(x, y, z);
-		if(tracks[y % 4][i].draw) tracks[y % 4][i].draw(g);
-		
-		output("track", y % 4, i, tracks[y % 4][i].v);
-	}
-	
-	g.refresh();
 }
 
 g.event = function(x, y, z) {
 	if(x < 15) {
-
-		for(var i = 0; i < patterns.length; i++) {
-			patterns[i].look(x, y, z);
-		}
-		
-		update(x, y, z);
-	}
-	else {
-		pages[0].look(x, y, z);
-		pages[0].draw(g);
-		
-		pages[1].look(x, y, z);
-		pages[1].draw(g);
-		
-		g.refresh();
-	}
-}
-
-var redraw = function() {
-	g.all(0);
-	for(i in controls) {
-		if(controls[i].draw) controls[i].draw(g);
-	}
-	
-	for(var i = 0; i < tracks.length; i++) {
-		for(j in tracks[i]) {
-			if(tracks[i][j].draw) tracks[i][j].draw(g);
+		var i = page;
+		if(pages[i]) {
+			for(j in pages[i]) {
+				for(k in pages[i][j]) {
+					if(pages[i][j][k].look(x, y, z)) {
+						for(l in pages[i][j]) {
+							if(!(pages[i][j][k].ispattern) && pages[i][j][l].ispattern) {
+								pages[i][j][l].store(j, k, pages[i][j][k].v);
+							}
+						}
+					}
+					
+					pages[i][j][k].draw(g);
+					
+					output(j, k, pages[i][j][k].v);
+				}
+			}
 		}
 	}
-	
-	pages[0].draw(g);
-	pages[1].draw(g);
+	else if(x == 15) {
+		nav.look(x, y, z);
+		nav.draw(g);
+	}
 	
 	g.refresh();
 }
 
-pages[0] = new Value(0, [15, [0, 1, 2, 3]], [[0, 0, 0, 0], HI], function() { return 1; });
-pages[0].event = function(v) {
-	page[0] = v;
-	redraw();
-}
-
-pages[1] = new Value(0, [15, [4, 5, 6, 7]], [[0, 0, 0, 0], HI], function() { return 1; });
-pages[1].event = function(v) {
-	page[1] = v;
-	redraw();
-}
-
-controls["p" + 0 + 0] = new Toggle(0, [14, ((0) * 4) + 0], [0, LO, HI], function() { return page[0] == 0; });
-
-for(var i = 0; i < 8; i++) {
+var redraw = function() {
+	g.all(0);
 	
-	for(var j = 0; j < 4; j++) {
-		var top = Number(i >= 4);
-		
-		post((top * 4) + j);
-		
-		controls["p" + i + j] = new Toggle(0, [14, (top * 4) + j], [0, LO, HI], function() { 
-			return page[this.top] == this.page;
-		});
-		controls["p" + i + j].page = i % 4;
-		controls["p" + i + j].top = top;
-			
-		controls["p" + i + j].draw(g);
-		
-		patterns[(i * 4) + j] = new Pattern(controls["p" + i + j], update, function() { return page[this.top] == this.page; });
-		controls["p" + i + j].page = i % 4;
-		controls["p" + i + j].top = top;
-		
+	for(i in pages[page]) {
+		for(j in pages[page][i]) {
+			pages[page][i][j].draw(g);
+		}
+	}
+	
+	nav.draw(g);
+	
+	g.refresh();
+}
+
+input = function(n) {
+	for(var i = 0; i < pages.length; i++) {
+		//for 
 	}
 }
 
-var Track = function(n, p, cp) {
+var Track = function(n, p) {
 	var row = [];
 	for(var i = 0; i < 15; i++) row[i] = i;
 	var rowb = [];
 	for(var i = 0; i < 15; i++) rowb[i] = 0;
 	
 	//this.n = n;
-	this.r = new Toggle(0, [0, n], [LO, HI], function() { return page[0] == p; });
-	this.m = new Toggle(0, [1, n], [0, HI], function() { return page[0] == p; });
-	this.rev = new Toggle(0, [2, n], [LO, HI], function() { return page[0] == p; });
-	this.s = new Value(3, [[3, 4, 5, 6, 7, 8], n], [[0, 0, 0, LO, 0, 0], HI], function() { return page[0] == p; });
-	this.b = new Value(n, [[9, 10, 11, 12], n], [[0, 0, 0, 0], HI], function() { return page[0] == p; });
-	this.cut = new Value(-1, [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], n + 4], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return page[1] == cp; });
+	this.r = new Toggle(0, [0, n], [LO, HI], p);
+	this.m = new Toggle(0, [1, n], [0, HI], p);
+	this.rev = new Toggle(0, [2, n], [LO, HI], p);
+	this.s = new Value(3, [[3, 4, 5, 6, 7, 8], n], [[0, 0, 0, LO, 0, 0], HI], p);
+	this.b = new Value(n, [[9, 10, 11, 12], n], [[0, 0, 0, 0], HI], p);
+	this.p = new Pattern(0, [14, n], [0, LO, HI], p, update);
+}
+
+var Cut = function(n, p) {
+	this.cut = new Value(-1, [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], n + 4], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], p);
 	
 	this.cut.look = function(x, y, z) {
 		if(this.pg()) {
@@ -139,6 +118,7 @@ var Track = function(n, p, cp) {
 	}
 }
 
+/*
 input["track"] = function(n) {
 	if(n[0] == "pos") {
 		if(page[1] == 0) {
@@ -155,161 +135,158 @@ input["track"] = function(n) {
 		g.refresh();
 	}
 }
-
-controls.scale = new Toggles([2,4,6,9,11], [[0, 1,2,3,4,5,6,7,8,9,10,11], 0], [[0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return page[0] == 3; });
-controls.marks = new Toggles([0, 3], [[], 1], [[0,0,0,0,0,0,0,0,0,0,0,0], LO], function() { return page[0] == 3; });
-
-controls.kpages =  new Value(0, [[10, 11, 12, 13], 3], [[LO,LO,LO,LO], HI], function() { return page[0] == 3; });
-controls.kpages.event = function(v) {
-	kpage = v;
-	redraw();
-}
-
-controls.rows = {}
-
-controls.rows.root = [];
-controls.rows.root[0] = new Value(0, [[0,1,2,3,4,5,6,7,8,9,10,11], 2], [[0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return page[0] == 3 && kpage == 0; });
-controls.rows.root[1] = new Value(0, [[0,1,2,3,4,5,6,7,8,9,10,11], 2], [[0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return page[0] == 3 && kpage == 1; });
-controls.rows.root[2] = new Value(0, [[0,1,2,3,4,5,6,7,8,9,10,11], 2], [[0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return page[0] == 3 && kpage == 2; });
-controls.rows.root[3] = new Value(0, [[0,1,2,3,4,5,6,7,8,9,10,11], 2], [[0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return page[0] == 3 && kpage == 3; });
-
-controls.rows.oct = [];
-controls.rows.oct[0] = new Value(3, [[0,1,2,3,4,5,6,7,8,9], 3], [[0,0,0,0,0,LO,0,0,0,0], HI], function() { return page[0] == 3 && kpage == 0; });
-controls.rows.oct[1] = new Value(4, [[0,1,2,3,4,5,6,7,8,9], 3], [[0,0,0,0,0,LO,0,0,0,0], HI], function() { return page[0] == 3 && kpage == 1; });
-controls.rows.oct[2] = new Value(5, [[0,1,2,3,4,5,6,7,8,9], 3], [[0,0,0,0,0,LO,0,0,0,0], HI], function() { return page[0] == 3 && kpage == 2; });
-controls.rows.oct[3] = new Value(6, [[0,1,2,3,4,5,6,7,8,9], 3], [[0,0,0,0,0,LO,0,0,0,0], HI], function() { return page[0] == 3 && kpage == 3; });
-
-controls.rows.keyb = [];
-controls.rows.keyb[3] = new Momentaries([], [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], 4], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return page[1] == 1; });
-controls.rows.keyb[2] = new Momentaries([], [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], 5], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return page[1] == 1; });
-controls.rows.keyb[1] = new Momentaries([], [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], 6], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return page[1] == 1; });
-controls.rows.keyb[0] = new Momentaries([], [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], 7], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return page[1] == 1; });
-
-controls.rows.draw = function(g) {
-	for(var i = 0; i < 4; i++) {
-		controls.rows.root[i].draw(g);
-		controls.rows.oct[i].draw(g);
-		controls.rows.keyb[i].draw(g);
-	}
-}
-
-controls.rows.look = function(x, y, z) {
-	for(var i = 0; i < 4; i++) {
-		controls.rows.root[i].look(x, y, z);
-		controls.rows.oct[i].look(x, y, z);
-		controls.rows.keyb[i].look(x, y, z);
-	}
-}
-
-controls.scale.event = function() {
-	controls.marks.p[0] = [];
-	
-	for(var i = 0; i < controls.scale.v.length; i++) {
-		controls.marks.p[0].push(controls.scale.p[0][controls.scale.v[i]]);
-		//controls.marks.p[0].sort();
-	}
-	
-	for(var i = 0; i < 4; i++) {
-		controls.rows.root[i].p[0] = [];
-	
-		for(var j = 0; j < controls.scale.v.length; j++) {
-			controls.rows.root[i].p[0].push(controls.scale.p[0][controls.scale.v[j]]);
-			//controls.marks.p[0].sort();
-		}
-	}
-	
-	controls.marks.event();
-	redraw();
-}
-
-controls.marks.event = function(v, last) {
-	for(var i = 0; i < 4; i++) {
-		controls.rows.keyb[i].b[0] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-		
-		for(var j = -Math.ceil(controls.rows.keyb[0].p[0].length / controls.scale.v.length); j < Math.ceil(controls.rows.keyb[0].p[0].length / controls.scale.v.length); j++) {
-			for(var k = 0; k < controls.marks.v.length; k++) {
-				controls.rows.keyb[i].b[0][controls.marks.v[k] + (j * controls.scale.v.length) - controls.rows.root[i].v] = LO;
-			}
-		}
-	}
-	
-	redraw();
-}
-
-for(var i = 0; i < 4; i++) {
-	controls.rows.keyb[i].index = i;
-	
-	controls.rows.keyb[i].event = function(v, last, add, rem) {
-		var key;
-		var gate;
-		
-		if(add != -1) {
-			key = add;
-			gate = 1;
-		}
-		else if(rem != -1) {
-			key = rem;
-			gate = 0;
-		}
-		key += controls.rows.root[this.index].v;
-		key = controls.scale.v[key % controls.scale.v.length] + ((Math.floor(key / controls.scale.v.length) + controls.rows.oct[this.index].v) * controls.scale.p[0].length);
-		
-		output("key", key, gate);
-		
-		/*
-		if(gate) {
-			controls.kpages.v = this.index;
-			controls.kpages.event(this.index);
-		}*/
-	}
-	
-	controls.rows.root[i].event = function(v) {
-		this.v = v;
-		
-		controls.scale.event();
-	}
-	
-	controls.rows.oct[i].event = function(v) {
-		this.v = v;
-		
-		controls.scale.event();
-	}
-}
-/*
-for(var i = 0; i < 4; i++) {
-	controls.p0 = new Toggle(0, [14, 4], [0, LO, HI], function() { return 1; });
-	controls.p1 = new Toggle(0, [14, 5], [0, LO, HI], function() { return 1; });
-	controls.p2 = new Toggle(0, [14, 6], [0, LO, HI], function() { return 1; });
-	controls.p3 = new Toggle(0, [14, 7], [0, LO, HI], function() { return 1; });
-}
-
-patterns[0] = new Pattern(controls.p0, update);
-patterns[1] = new Pattern(controls.p1, update);
-patterns[2] = new Pattern(controls.p2, update);
-patterns[3] = new Pattern(controls.p3, update);
 */
 
-var init = function() {
-	controls.scale.event();
-	controls.marks.event();
+var Tuner = function(n, p, keyboard) {
+	var kpage = 0;
+
+	this.scale = new Toggles([2,4,6,9,11], [[0, 1,2,3,4,5,6,7,8,9,10,11], 0], [[0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return page[0] == 3; });
+	this.marks = new Toggles([0, 3], [[], 1], [[0,0,0,0,0,0,0,0,0,0,0,0], LO], function() { return page[0] == 3; });
 	
-	for(i in controls) {
-		if(controls[i].draw) controls[i].draw(g);
+	this.kpages =  new Value(0, [[10, 11, 12, 13], 3], [[LO,LO,LO,LO], HI], p);
+	this.kpages.event = function(v) {
+		kpage = v;
+		redraw();
+	}
+	
+	
+	this.root0 = new Value(0, [[0,1,2,3,4,5,6,7,8,9,10,11], 2], [[0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return p() && kpage == 0; });
+	this.root1 = new Value(0, [[0,1,2,3,4,5,6,7,8,9,10,11], 2], [[0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return p() && kpage == 0 });
+	this.root2 = new Value(0, [[0,1,2,3,4,5,6,7,8,9,10,11], 2], [[0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return p() && kpage == 0 });
+	this.root3 = new Value(0, [[0,1,2,3,4,5,6,7,8,9,10,11], 2], [[0,0,0,0,0,0,0,0,0,0,0,0], HI], function() { return p() && kpage == 0 });
+	
+	this.oct0 = new Value(3, [[0,1,2,3,4,5,6,7,8,9], 3], [[0,0,0,0,0,LO,0,0,0,0], HI], function() { return p() && kpage == 0; });
+	this.oct1 = new Value(4, [[0,1,2,3,4,5,6,7,8,9], 3], [[0,0,0,0,0,LO,0,0,0,0], HI], function() { return p() && kpage == 1; });
+	this.oct2 = new Value(5, [[0,1,2,3,4,5,6,7,8,9], 3], [[0,0,0,0,0,LO,0,0,0,0], HI], function() { return p() && kpage == 2; });
+	this.oct3 = new Value(6, [[0,1,2,3,4,5,6,7,8,9], 3], [[0,0,0,0,0,LO,0,0,0,0], HI], function() { return p() && kpage == 3; });
+	
+	var scale = this.scale;
+	var marks = this.marks;
+	
+	var roots = [this.root0, this.root1, this.root2, this.root3];
+	var octs = [this.osct0, this.oct1, this.oct2, this.oct3];
+	
+	this.scale.event = function() {
+		marks.p[0] = [];
+		
+		for(var i = 0; i < scale.v.length; i++) {
+			marks.p[0].push(scale.p[0][controls.scale.v[i]]);
+			//controls.marks.p[0].sort();
+		}
+		
+		for(var i = 0; i < 4; i++) {
+			roots[i].p[0] = [];
+		
+			for(var j = 0; j < scale.v.length; j++) {
+				roots[i].p[0].push(scale.p[0][scale.v[j]]);
+				//controls.marks.p[0].sort();
+			}
+		}
+		
+		marks.event();
+		redraw();
+	}
+	
+	var keyboard = keyboard;
+	
+	this.marks.event = function(v) {
+		for(var i = 0; i < 4; i++) {
+			keyboard["keyb" + i].tune(scale, marks, roots[i], octs[i]);
+		}
 	}
 	
 	for(var i = 0; i < 4; i++) {
- 		tracks[i] = new Track(i, 0, 0);
-
-		for(j in tracks[i]) {
-			if(tracks[i][j].draw) {
-				tracks[i][j].draw(g);
-				output(i, j, tracks[i][j].v);
-			}
-		}	
+		roots[i].event = function(v) {
+			this.v = v;
+			
+			scale.event();
+		}
+		
+		octs[i].event = function(v) {
+			this.v = v;
+			
+			scale.event();
+		}
 	}
 	
-	pages[0].draw(g);
-	pages[1].draw(g);
+	scale.event();
+}
+
+var Keyboard = function(n, p, o) {
+	this.keyb3 = new Momentaries([], [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], n], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], p);
+	this.keyb2 = new Momentaries([], [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], n + 1], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], p);
+	this.keyb1 = new Momentaries([], [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], n + 2], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], p);
+	this.keyb0 = new Momentaries([], [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], n + 3], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], p);
 	
-	g.refresh();
+	this.p0 = new Pattern(0, [14, n], [0, LO, HI], p, update);
+	this.p1 = new Pattern(0, [14, n + 1], [0, LO, HI], p, update);
+	this.p2 = new Pattern(0, [14, n + 2], [0, LO, HI], p, update);
+	this.p3 = new Pattern(0, [14, n + 3], [0, LO, HI], p, update);
+	
+	for(var i = 0; i < 4; i++) {
+		this["keyb" + i].scale = [];
+		this["keyb" + i].marks = [];
+		this["keyb" + i].root = 0;
+		this["keyb" + i].oct = 0;
+		
+		this["keyb" + i].tune = function(scale, marks, root, oct) {
+			this.scale = scale;
+			this.marks = marks;
+			this.root = root;
+			this.oct = oct;
+			
+			this.b[0] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+			
+			for(var j = -Math.ceil(this.p[0].length / this.scale.length); j < Math.ceil(this.p[0].length / this.scale.length); j++) {
+				for(var k = 0; k < this.marks.length; k++) {
+					this.b[0][this.marks[k] + (j * this.scale.length) - this.root] = LO;
+				}
+			}
+		
+			redraw();
+		}
+			
+		this["keyb" + i].event = function(v, last, add, rem) {
+			var key;
+			var gate;
+			
+			if(add != -1) {
+				key = add;
+				gate = 1;
+			}
+			else if(rem != -1) {
+				key = rem;
+				gate = 0;
+			}
+			key += this.root;
+			key = this.scale[key % this.scale.length] + ((Math.floor(key / this.scale.length) + this.oct) * this.scale.length);
+			
+			output(o, "key", key, gate);
+			
+			/*
+			if(gate) {
+				controls.kpages.v = this.index;
+				controls.kpages.event(this.index);
+			}*/
+		}
+		
+		this["keyb" + i].tune([2,4,6,9,11], [0,3], 0, i + 3);
+	}
+}
+var init = function() {
+	interfaces = [
+		
+	]
+	
+	pages = [
+		{
+			"track 0": new Track(0, function() { return page == 0; }, "track 0"),
+			"track 1": new Track(1, function() { return page == 0; }, "track 1"),
+			"track 2": new Track(2, function() { return page == 0; }, "track 2"),
+			"track 3": new Track(3, function() { return page == 0; }, "track 3"),
+			"keyboard": new Keyboard(4, function() { return page == 0; }, "keyboard")
+		}
+	];
+	
+	redraw();
 }
