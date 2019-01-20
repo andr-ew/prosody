@@ -10,57 +10,58 @@ var LO = 7;
 var HI = 11;
 
 var pages = [];
-var page = 0;
+var top = 0;
+var bottom = 0;
 
-var patterns = [];
-
-var nav = new Value(0, [15, [0, 1, 2, 3, 4, 5, 6, 7]], [[0, 0, 0, 0, 0, 0, 0, 0], HI], function() { return 1; });
-nav.event = function(v) {
-	page = v;
+var nav1 = new Value(0, [15, [0, 1, 2, 3]], [[0, 0, 0, 0], HI], function() { return 1; });
+nav1.event = function(v) {
+	top = v;
 	redraw();
 }
 
-var update = function(j, k, v) {
-	for(var i = 0; i < pages.length; i++) {
+var nav2 = new Value(0, [15, [4, 5, 6, 7]], [[0, 0, 0, 0], HI], function() { return 1; });
+nav2.event = function(v) {
+	bottom = v;
+	redraw();
+}
+
+
+var update = function(i, j, v) {
+	if (pages[i][j].v != v) {
+		pages[i][j].v = v;
 		
-		if(pages[i][j] != null) {
-			if (pages[i][j][k].v != v) {
-				pages[i][j][k].v = v;
-				
-				output(j, k, pages[i][j][k].v);
-			}
-			
-			pages[i][j][k].draw(g);
-			
-			g.refresh();
-		}
+		output(i, j, pages[i][j].v);
 	}
+	
+	pages[i][j].draw(g);
+	
+	g.refresh();
 }
 
 g.event = function(x, y, z) {
 	if(x < 15) {
-		var i = page;
-		if(pages[i]) {
+		for(var i = 0; i < pages.length; i++) {
 			for(j in pages[i]) {
-				for(k in pages[i][j]) {
-					if(pages[i][j][k].look(x, y, z)) {
-						for(l in pages[i][j]) {
-							if(!(pages[i][j][k].ispattern) && pages[i][j][l].ispattern) {
-								pages[i][j][l].store(j, k, pages[i][j][k].v);
-							}
+				if(pages[i][j].look(x, y, z)) {
+					for(l in pages[i]) {
+						if(!(pages[i][j].ispattern) && pages[i][l].ispattern) {
+							pages[i][l].store(i, j, pages[i][j].v);
 						}
 					}
-					
-					pages[i][j][k].draw(g);
-					
-					output(j, k, pages[i][j][k].v);
 				}
+				
+				pages[i][j].draw(g);
+				
+				output(i, j, pages[i][j].v);
 			}
 		}
 	}
 	else if(x == 15) {
-		nav.look(x, y, z);
-		nav.draw(g);
+		nav1.look(x, y, z);
+		nav1.draw(g);
+		
+		nav2.look(x, y, z);
+		nav2.draw(g);
 	}
 	
 	g.refresh();
@@ -69,73 +70,118 @@ g.event = function(x, y, z) {
 var redraw = function() {
 	g.all(0);
 	
-	for(i in pages[page]) {
-		for(j in pages[page][i]) {
-			pages[page][i][j].draw(g);
+	for(var i = 0; i < pages.length; i++) {
+		for(j in pages[i]) {
+			pages[i][j].draw(g);
 		}
 	}
 	
-	nav.draw(g);
+	nav1.draw(g);
+	nav2.draw(g);
 	
 	g.refresh();
 }
 
-input = function(n) {
-	for(var i = 0; i < pages.length; i++) {
-		//for 
-	}
+input = function(n) { //-----------------------
+	update(n[0], n[1], n[2]);
 }
 
-var Track = function(n, p) {
+var Loop = function(n, p) {
 	var row = [];
 	for(var i = 0; i < 15; i++) row[i] = i;
 	var rowb = [];
 	for(var i = 0; i < 15; i++) rowb[i] = 0;
 	
 	//this.n = n;
-	this.r = new Toggle(0, [0, n], [LO, HI], p);
-	this.m = new Toggle(0, [1, n], [0, HI], p);
-	this.rev = new Toggle(0, [2, n], [LO, HI], p);
-	this.s = new Value(3, [[3, 4, 5, 6, 7, 8], n], [[0, 0, 0, LO, 0, 0], HI], p);
-	this.b = new Value(n, [[9, 10, 11, 12], n], [[0, 0, 0, 0], HI], p);
-	this.p = new Pattern(0, [14, n], [0, LO, HI], p, update);
+	
+	this.r0 = new Toggle(0, [0, n], [LO, HI], p);
+	this.m0 = new Toggle(0, [1, n], [0, HI], p);
+	this.rev0 = new Toggle(0, [2, n], [LO, HI], p);
+	this.s0 = new Value(3, [[3, 4, 5, 6, 7, 8], n], [[0, 0, 0, LO, 0, 0], HI], p);
+	this.b0 = new Value(n, [[9, 10, 11, 12], n], [[0, 0, 0, 0], HI], p);
+	this.p0 = new Pattern(0, [14, n], [0, LO, HI], p, update);
+	
+	this.r1 = new Toggle(0, [0, n + 1], [LO, HI], p);
+	this.m1 = new Toggle(0, [1, n + 1], [0, HI], p);
+	this.rev1 = new Toggle(0, [2, n + 1], [LO, HI], p);
+	this.s1 = new Value(3, [[3, 4, 5, 6, 7, 8], n + 1], [[0, 0, 0, LO, 0, 0], HI], p);
+	this.b1 = new Value(n + 1, [[9, 10, 11, 12], n + 1], [[0, 0, 0, 0], HI], p);
+	this.p1 = new Pattern(0, [14, n + 1], [0, LO, HI], p, update);
+	
+	this.r2 = new Toggle(0, [0, n + 2], [LO, HI], p);
+	this.m2 = new Toggle(0, [1, n + 2], [0, HI], p);
+	this.rev2 = new Toggle(0, [2, n + 2], [LO, HI], p);
+	this.s2 = new Value(3, [[3, 4, 5, 6, 7, 8], n + 2], [[0, 0, 0, LO, 0, 0], HI], p);
+	this.b2 = new Value(n + 2, [[9, 10, 11, 12], n + 2], [[0, 0, 0, 0], HI], p);
+	this.p2 = new Pattern(0, [14, n + 2], [0, LO, HI], p, update);
+	
+	this.r3 = new Toggle(0, [0, n + 3], [LO, HI], p);
+	this.m3 = new Toggle(0, [1, n + 3], [0, HI], p);
+	this.rev3 = new Toggle(0, [2, n + 3], [LO, HI], p);
+	this.s3 = new Value(3, [[3, 4, 5, 6, 7, 8], n + 3], [[0, 0, 0, LO, 0, 0], HI], p);
+	this.b3 = new Value(n + 3, [[9, 10, 11, 12], n + 3], [[0, 0, 0, 0], HI], p);
+	this.p3 = new Pattern(0, [14, n + 3], [0, LO, HI], p, update);
 }
 
 var Cut = function(n, p) {
-	this.cut = new Value(-1, [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], n + 4], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], p);
+	this.cut0 = new Value(-1, [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], n + 0], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], p);
+	this.cut1 = new Value(-1, [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], n + 1], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], p);
+	this.cut2 = new Value(-1, [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], n + 2], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], p);
+	this.cut3 = new Value(-1, [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], n + 3], [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], HI], p);
 	
-	this.cut.look = function(x, y, z) {
+	this.cut0.look = function(x, y, z) {
 		if(this.pg()) {
 			if(y == this.p[1] && z == 1) {
 				for(var i = 0; i < this.p[0].length; i++) {
 					if(this.p[0][i] == x) {
-						output("track", n, "jump", x);
+						output(0, "cut0", x);
 						break;
 					}
 				}
 			}
 		}
 	}
-}
-
-/*
-input["track"] = function(n) {
-	if(n[0] == "pos") {
-		if(page[1] == 0) {
-			tracks[n[1]].cut.v = n[2];
-			tracks[n[1]].cut.draw(g);
-			
-			//if(n[0] == 0)
-	 		g.refresh();
+	
+	this.cut1.look = function(x, y, z) {
+		if(this.pg()) {
+			if(y == this.p[1] && z == 1) {
+				for(var i = 0; i < this.p[0].length; i++) {
+					if(this.p[0][i] == x) {
+						output(0, "cut1", x);
+						break;
+					}
+				}
+			}
 		}
 	}
-	else if(n[0] == "m") {
-		tracks[n[1]].m.v = n[2];
-		tracks[n[1]].m.draw(g);
-		g.refresh();
+	
+	this.cut2.look = function(x, y, z) {
+		if(this.pg()) {
+			if(y == this.p[1] && z == 1) {
+				for(var i = 0; i < this.p[0].length; i++) {
+					if(this.p[0][i] == x) {
+						output(0, "cut2", x);
+						break;
+					}
+				}
+			}
+		}
 	}
+	
+	this.cut3.look = function(x, y, z) {
+		if(this.pg()) {
+			if(y == this.p[1] && z == 1) {
+				for(var i = 0; i < this.p[0].length; i++) {
+					if(this.p[0][i] == x) {
+						output(0, "cut3", x);
+						break;
+					}
+				}
+			}
+		}
+	}
+	
 }
-*/
 
 var Tuner = function(n, p, keyboard) {
 	var kpage = 0;
@@ -273,19 +319,10 @@ var Keyboard = function(n, p, o) {
 		this["keyb" + i].tune([2,4,6,9,11], [0,3], 0, i + 3);
 	}
 }
-var init = function() {
-	interfaces = [
-		
-	]
-	
+var init = function() {	
 	pages = [
-		{
-			"track 0": new Track(0, function() { return page == 0; }, "track 0"),
-			"track 1": new Track(1, function() { return page == 0; }, "track 1"),
-			"track 2": new Track(2, function() { return page == 0; }, "track 2"),
-			"track 3": new Track(3, function() { return page == 0; }, "track 3"),
-			"keyboard": new Keyboard(4, function() { return page == 0; }, "keyboard")
-		}
+		new Loop(0, function() { return top == 0; }),
+		new Cut(4, function() { return bottom == 0; })
 	];
 	
 	redraw();
