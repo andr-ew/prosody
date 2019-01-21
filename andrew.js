@@ -215,7 +215,8 @@ Momentaries.prototype.look = function(x, y, z) {
 			if(y == this.p[1]) {
 				for(var i = 0; i < this.p[0].length; i++) {
 					if(this.p[0][i] == x) {
-						var last = this.v.slice();
+						var last = [];
+						if(this.v) last = this.v.slice();
 						var added = -1;
 						var removed = -1;
 						

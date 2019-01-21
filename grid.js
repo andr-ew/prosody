@@ -59,19 +59,20 @@ function gridjs_input() {
 }
 
 //var in = function(a) {]
-//var input = {}
+var input = {}
 
 function input_list() {
-	//var index = arrayfromargs(arguments);
+	var index = arrayfromargs(arguments);
 	
-	//var n = index.slice();
-	//n.shift();
+	var n = index.slice();
+	n.shift();
 	//n.shift();
 	
 	//post(index);
 	
-	//input[index[0]](n);
-	input(arrayfromargs(arguments));
+	input[index[0]](n);
+	
+	//input(arrayfromargs(arguments));
 }
 
 function output() {
