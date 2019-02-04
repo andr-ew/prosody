@@ -71,8 +71,6 @@ function input_list() {
 	//post(index);
 	
 	input[index[0]](n);
-	
-	//input(arrayfromargs(arguments));
 }
 
 function output() {

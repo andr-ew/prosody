@@ -7,7 +7,7 @@ function Control(v, p, b, pg) {
 	this.b = b;
 	this.pg = pg;
 	this.event = function() {}
-	this.output = function() { return this.v }
+	this.output = function(v) { return v }
 }
 
 Control.prototype.draw = function(g) {}
