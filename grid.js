@@ -204,8 +204,7 @@ Monome.prototype.menu = function(i) {
 			
 			//post(this.ports);
 			//post(this.serials);
-			if(this.connected)
-				outlet(0, "monome", 2, "/sys/port", 0);
+			if(this.connected) outlet(0, "monome", 2, "/sys/port", 0);
 		}
 		
 		item = i;

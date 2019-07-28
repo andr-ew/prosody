@@ -6,7 +6,7 @@ include("andrew.js");
 
 var g = grid.connect();
 
-var LO = 7;
+var LO = 11;
 var HI = 11;
 
 var controls = {}
@@ -127,16 +127,16 @@ var Track = function(n, pg1, pg2, buffg) {
 	this.jump.draw = function() {}
 	this.jump.output = function(v) { return Math.floor(v * (16/8)); }
 		
-	this.lvl = new Fader(6, [[8, 14], n + 4], [0, HI, LO], function() { return 0; });
-	this.lvl.output = function(v) { return v / 6; }
+	//this.lvl = new Fader(6, [[8, 14], n + 4], [0, HI, LO], function() { return 0; });
+	//this.lvl.output = function(v) { return v / 6; }
 		
-	this.pan = new Crossfader(3, [[8, 14], n + 4], [0, HI, LO], function() { return 0; });
-	this.pan.output = function(v) { return v / 14; }
+	//this.pan = new Crossfader(3, [[8, 14], n + 4], [0, HI, LO], function() { return 0; });
+	//this.pan.output = function(v) { return v / 14; }
 		
-	this.fb = new Fader(0, [[0, 10], n + 4], [0, HI, LO], function() { return 0; });
-	this.fb.output = function(v) { return v / 10; }
+	//this.fb = new Fader(0, [[0, 10], n + 4], [0, HI, LO], function() { return 0; });
+	//this.fb.output = function(v) { return v / 10; }
 		
-	this.route = new Value(n, [[11, 12, 13, 14], n + 4], [[0,0,0,0], HI], function() { return 0; });
+	//this.route = new Value(n, [[11, 12, 13, 14], n + 4], [[0,0,0,0], HI], function() { return 0; });
 }
 
 var Keyboard = function(n, p, o) {
@@ -195,7 +195,7 @@ var Keyboard = function(n, p, o) {
 			output(o, "midi", "midievent", 144, key, gate * 64);
 		}
 		
-		this["keyb" + i].tune([2,4,7,9,11], [0,3], (i % 2) * 2, Math.floor(i / 2) + 3);
+		this["keyb" + i].tune([2,4,7,9,11], [0], (i % 2) * 2, Math.floor(i / 2) + 2);
 	}
 }
 
