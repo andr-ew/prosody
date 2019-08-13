@@ -19,11 +19,11 @@ some apps require either a [128 or 64 grid](https://monome.org/) from monome
 
 asynchronous digital tape looping interface for grids + max for live
 
-![pic](grid.jpg)
+![pic](anachronism_grid.jpg)
 
-![ss](ss.png)
+![ss](anachronsim.png)
 
-![docs](docs.png)
+![docs](anachronsim_docs.png)
 
 ### first steps
 
@@ -47,13 +47,11 @@ asynchronous digital tape looping interface for grids + max for live
 
 10. an experiment: with multi-tracking set up, place the `.remote` device in a separate audio track from the `ekphras` tracks. the 'route' key now sends the audio out for the `ekphras` track to the track that the `remote` device is in. so, for example, if you set all your tracks to a common audio source, you can now route back into that main track and into the other loops from the grid.
 
-[download](https://github.com/AndrewShike/anaphora/anachronsim/master.zip)
-
 # anaphora
 
 playable varispeed delay/looper in max for live. a variation on mlr for grids. rough around the edges.
 
-![pic](anaphora_pic.png)
+![pic](anaphora.png)
 
 a sort-of-polished-up version of of a [norns mlr](https://llllllll.co/t/mlr-norns/21145/175)-inspired delay/looper. excels at expressive glitchy improv stuff.
 
@@ -62,14 +60,6 @@ differences from norns mlr include:
 * a simplified 1-page / 4-buffer layout. lets you cut, repitch, record and switch buffers simultaneously, all of which can be pattern recorded.
 * unlike `softcut`, the audio engine is home-brewed in max and has a lot of glitchy/rough edges, including buffer clicks & varispeed record/playback resampling artifacts. [think early-2000's microsound.](https://shop.christopherwillits.com/album/folding-and-the-tea) this is all semi-intentional and I'm not looking to alter the behavior for this app.
 * alternate record speed / play speed / overdub architecture. at overdub(fb) = 0, record speed is locked at 1, speed controls playback. at overdub > 0, playback speed is locked at 1, speed controls record. honesty, no idea why I chose this behavior, but it can be fun.
-
-### Requirements
-
-[Ableton Live](https://www.ableton.com/en/live/)
-
-[Max for Live](https://www.ableton.com/en/live/max-for-live/)
-
-[128 or 64 grid](https://monome.org/)
 
 ![docs](anaphora_docs.png)
 
@@ -85,11 +75,9 @@ differences from norns mlr include:
 
 explore ~
 
-[download](https://github.com/AndrewShike/anaphora/archive/master.zip)
-
 # colloquial
 
-![ss](ss.png)
+![ss](colloquial.png)
 
 ### quickstart
 
@@ -100,7 +88,7 @@ explore ~
 
 # spondee
 
-![ss](ss.png)
+![ss](spondee.png)
 
 divides the mac trackpad into four vertical faders outputting MIDI cc. while enabled, the trackpad cannot be used as a mouse, includes a toggle mapped to the '~' key.
 
@@ -124,7 +112,7 @@ divides the mac trackpad into four vertical faders outputting MIDI cc. while ena
 
 # synecdoche
 
-![ss](ss.png)
+![ss](synecdoche.png)
 
 ### quickstart
 
@@ -137,7 +125,7 @@ divides the mac trackpad into four vertical faders outputting MIDI cc. while ena
 
 # alliterate
 
-![ss](ss.png)
+![ss](alliterate.png)
 
 key difference of this delay vs. other varispeed delays is that record speed is always = 0 & the buffer is always overdubbed at play speed = 1. setting speed to -0.5 is a good demonstration of how this works.
 
@@ -147,7 +135,7 @@ drop alliterate.amxd in an audio track in ableton
 
 # enueg
 
-![pic](ss.png)
+![pic](enueg.png)
 
 feel like it's more fun not to say anything about this one? It's kind of a looper.
 
@@ -157,7 +145,7 @@ drop enueg.amxd in an audio track in ableton
 
 # ekphras
 
-![ss](ss.png)
+![ss](ekphras.png)
 
 this is pretty much just a max for live "wrapper" for [softcut](https://llllllll.co/t/norns-2-0-softcut/20550). just one voice (mono) w/ all the parameters exposed in a straightforward way so you can build your own interface around it with MIDI/automation. It can be used for looping, delaying, fo-granular-ing, and stuff in-between those things.
 
@@ -179,7 +167,7 @@ drop dirge.amxd in an audio track in ableton
 
 # assonance
 
-![ss](ss.png)
+![ss](assonance.png)
 
 ### quickstart
 
