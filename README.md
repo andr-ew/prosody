@@ -12,6 +12,7 @@ some apps require either a [128 or 64 grid](https://monome.org/) from monome
 ### Contributers
 
 [andrew c. s.](https://andrewcs.bandcamp.com/)
+
 [dan derks](https://soundandprocess.com/)
 
 # anachronsim
