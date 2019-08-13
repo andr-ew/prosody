@@ -1,5 +1,5 @@
 # prosody
-iterative related concepts / suite of m4l devices for grids and no-grids
+a collection of open-ended tools for laptop centric composition. m4l devices for monome grids and no-grids.
 
 ### Requirements
 
