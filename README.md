@@ -90,6 +90,8 @@ hardware-modeled saturation in max for live pulled from [rodrigo constanzo's](ht
 
 # spondee
 
+turns the mac trackpad into 4 simultaneous midi faders
+
 ![ss](spondee.png)
 
 divides the mac trackpad into four vertical faders outputting MIDI cc. while enabled, the trackpad cannot be used as a mouse, includes a toggle mapped to the '~' key.
