@@ -21,9 +21,9 @@ asynchronous digital tape looping interface for grids + max for live
 
 ![pic](anachronism_grid.jpg)
 
-![ss](anachronsim.png)
+![ss](anachronism.png)
 
-![docs](anachronsim_docs.png)
+![docs](anachronism_docs.png)
 
 ### first steps
 
