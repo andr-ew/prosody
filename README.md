@@ -9,6 +9,11 @@ iterative related concepts / suite of m4l devices for grids and no-grids
 
 some apps require either a [128 or 64 grid](https://monome.org/) from monome
 
+### Contributers
+
+[andrew c. s.](https://andrewcs.bandcamp.com/)
+[dan derks](https://soundandprocess.com/)
+
 # anachronsim
 
 asynchronous digital tape looping interface for grids + max for live
@@ -178,3 +183,30 @@ drop dirge.amxd in an audio track in ableton
 ### quickstart
 
 drop assonance.amxd in an audio track in ableton
+
+# hospital_food
+
+m4l impression of nlc's let's splosh, designed for andrew's growing m4l collection.
+
+![ss](hospital_food.png)
+
+I've been in the hospital for the last few days with a perforated appendix and while the nursing staff has been nothing but sweet, engaged and fun, the first 40 hours were super boring. when racquel was able to visit again, she brought my computer and I dove deep into the m4l tools that andrew has been releasing. they're absolutely incredible.
+
+the only thing I wished for was a control / modulation layer. I love nlc's 'let's splosh', so I took the basic maths of the schematic and flipped it into a lil' m4l device that has plenty of mappings to control yr faves from andrew's suite!
+
+the four foods have been renamed to the items I was allowed on my liquid diet:
+
+GELATIN SHERBET JUICE BROTH
+
+the device is basically made of four cycle~ objects following this comparator: 
+
+![formulas](formula.jpeg)
+
+### Documentation
+
+1.  load up hospital_food.amxd on any track in Live.
+2.  the two number boxes underneath each food will determine the frequency of each cycle~ device under the hood.
+3.  the first box (float) will help keep things lfo-y. the second box (integer) is there as a multiplier, to help things get weird if you need it.
+4.  once you have some float values selected for each food, you'll see the matrix of black boxes in the main part of the device rise, fall, and jump. it's working!
+5.  to use these modulations, click Map and select the parameter on any device you'd like. you can even map hospital_food back onto itself! I like modulating two of the floats while keeping the other two constant.
+6.  use the attenuators above each Map button to keep things "musically useful" -- I found that small modulation ranges can sometimes lead to more dramatic effects than big jumps, especially with filter cutoffs.
