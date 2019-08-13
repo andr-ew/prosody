@@ -1,6 +1,14 @@
 # prosody
 iterative related concepts / suite of m4l devices for grids and no-grids
 
+### Requirements
+
+[Ableton Live](https://www.ableton.com/en/live/)
+
+[Max for Live](https://www.ableton.com/en/live/max-for-live/)
+
+some apps require either a [128 or 64 grid](https://monome.org/) from monome
+
 # anachronsim
 
 asynchronous digital tape looping interface for grids + max for live
@@ -8,14 +16,6 @@ asynchronous digital tape looping interface for grids + max for live
 ![pic](grid.jpg)
 
 ![ss](ss.png)
-
-### Requirements
-
-[Ableton Live](https://www.ableton.com/en/live/)
-
-[Max for Live](https://www.ableton.com/en/live/max-for-live/)
-
-[128 or 64 grid](https://monome.org/)
 
 ![docs](docs.png)
 
@@ -85,7 +85,7 @@ explore ~
 
 ![ss](ss.png)
 
-# quickstart
+### quickstart
 
 1.	drop colloquial.amxd in an audio track in ableton
 2.	turn up a wet/dry knob, run some audio through
@@ -99,7 +99,7 @@ explore ~
 divides the mac trackpad into four vertical faders outputting MIDI cc. while enabled, the trackpad cannot be used as a mouse, includes a toggle mapped to the '~' key.
 
 
-# quickstart (ableton live)
+### quickstart (ableton live)
 
 (with ableton open & max/max trial installed)
 
@@ -120,7 +120,7 @@ divides the mac trackpad into four vertical faders outputting MIDI cc. while ena
 
 ![ss](ss.png)
 
-# quickstart
+### quickstart
 
 1.	drop synecdoche.amxd in a midi track in ableton
 2.	key map the 'q' key to disable the annoying hot swap preset shortcut thing (⌘k)
@@ -135,11 +135,19 @@ divides the mac trackpad into four vertical faders outputting MIDI cc. while ena
 
 key difference of this delay vs. other varispeed delays is that record speed is always = 0 & the buffer is always overdubbed at play speed = 1. setting speed to -0.5 is a good demonstration of how this works.
 
+### quickstart
+
+drop alliterate.amxd in an audio track in ableton
+
 # enueg
 
 ![pic](ss.png)
 
 feel like it's more fun not to say anything about this one? It's kind of a looper.
+
+### quickstart
+
+drop enueg.amxd in an audio track in ableton
 
 # ekphras
 
@@ -147,7 +155,7 @@ feel like it's more fun not to say anything about this one? It's kind of a loope
 
 this is pretty much just a max for live "wrapper" for [softcut](https://llllllll.co/t/norns-2-0-softcut/20550). just one voice (mono) w/ all the parameters exposed in a straightforward way so you can build your own interface around it with MIDI/automation. It can be used for looping, delaying, fo-granular-ing, and stuff in-between those things.
 
-# quickstart
+### quickstart
 
 1.	drop ekphras.amxd in an audio track in ableton
 
@@ -159,7 +167,7 @@ two resampling algorithms: one smooth, one jagged. run yr signal in either direc
 
 (macOS only at the moment)
 
-# quickstart
+### quickstart
 
 drop dirge.amxd in an audio track in ableton
 
@@ -167,6 +175,6 @@ drop dirge.amxd in an audio track in ableton
 
 ![ss](ss.png)
 
-# quickstart
+### quickstart
 
 drop assonance.amxd in an audio track in ableton
