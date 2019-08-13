@@ -77,6 +77,8 @@ explore ~
 
 # colloquial
 
+hardware-modeled saturation in max for live pulled from [rodrigo constanzo's](https://github.com/rconstanzo) [TPV](https://github.com/rconstanzo/the-party-van)
+
 ![ss](colloquial.png)
 
 ### quickstart
@@ -112,6 +114,8 @@ divides the mac trackpad into four vertical faders outputting MIDI cc. while ena
 
 # synecdoche
 
+grid keyboard for your keyboard
+
 ![ss](synecdoche.png)
 
 ### quickstart
@@ -125,6 +129,8 @@ divides the mac trackpad into four vertical faders outputting MIDI cc. while ena
 
 # alliterate
 
+dual varispeed delay lines
+
 ![ss](alliterate.png)
 
 key difference of this delay vs. other varispeed delays is that record speed is always = 0 & the buffer is always overdubbed at play speed = 1. setting speed to -0.5 is a good demonstration of how this works.
@@ -135,9 +141,9 @@ drop alliterate.amxd in an audio track in ableton
 
 # enueg
 
-![pic](enueg.png)
-
 feel like it's more fun not to say anything about this one? It's kind of a looper.
+
+![pic](enueg.png)
 
 ### quickstart
 
@@ -145,15 +151,19 @@ drop enueg.amxd in an audio track in ableton
 
 # ekphras
 
+digital tape loop
+
 ![ss](ekphras.png)
 
-this is pretty much just a max for live "wrapper" for [softcut](https://llllllll.co/t/norns-2-0-softcut/20550). just one voice (mono) w/ all the parameters exposed in a straightforward way so you can build your own interface around it with MIDI/automation. It can be used for looping, delaying, fo-granular-ing, and stuff in-between those things.
+this is pretty much just a max for live "wrapper" for [softcut](https://llllllll.co/t/norns-2-0-softcut/20550) by ezra buchla. just one voice (mono) w/ all the parameters exposed in a straightforward way so you can build your own interface around it with MIDI/automation. It can be used for looping, delaying, fo-granular-ing, and stuff in-between those things.
 
 ### quickstart
 
 1.	drop ekphras.amxd in an audio track in ableton
 
 # dirge
+
+broken downsampling / country roads / max for live
 
 ![ss](dirge.png)
 
@@ -167,6 +177,8 @@ drop dirge.amxd in an audio track in ableton
 
 # assonance
 
+max for live wrapper of Surreal Machines’ sallen key filter
+
 ![ss](assonance.png)
 
 ### quickstart
@@ -175,7 +187,7 @@ drop assonance.amxd in an audio track in ableton
 
 # hospital_food
 
-m4l impression of nlc's let's splosh, designed for andrew's growing m4l collection.
+m4l impression of nlc's let's splosh (by Dan Derks)
 
 ![ss](hospital_food.png)
 
