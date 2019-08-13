@@ -116,7 +116,7 @@ divides the mac trackpad into four vertical faders outputting MIDI cc. while ena
 
 grid keyboard for your keyboard
 
-![ss](synecdoche.png)
+![ss](synechdoche.png)
 
 ### quickstart
 
