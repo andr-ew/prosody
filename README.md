@@ -179,7 +179,7 @@ drop dirge.amxd in an audio track in ableton
 
 # assonance
 
-max for live wrapper of Surreal Machines’ sallen key filter
+max for live wrapper of Surreal Machines’ sallen key filter + modulation
 
 ![ss](assonance.png)
 
