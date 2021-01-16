@@ -9,11 +9,13 @@ a collection of open-ended tools for laptop centric composition. m4l devices for
 
 some apps require either a [128 or 64 grid](https://monome.org/) from monome
 
-### Contributers
+### contributers
 
-[andrew c. s.](https://andrewcs.bandcamp.com/)
+[andrew cs](https://andrewcs.info/)
 
 [dan derks](https://soundandprocess.com/)
+
+cashin
 
 # anachronsim
 
