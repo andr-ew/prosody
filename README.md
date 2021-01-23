@@ -215,3 +215,15 @@ the device is basically made of four cycle~ objects following this comparator:
 4.  once you have some float values selected for each food, you'll see the matrix of black boxes in the main part of the device rise, fall, and jump. it's working!
 5.  to use these modulations, click Map and select the parameter on any device you'd like. you can even map hospital_food back onto itself! I like modulating two of the floats while keeping the other two constant.
 6.  use the attenuators above each Map button to keep things "musically useful" -- I found that small modulation ranges can sometimes lead to more dramatic effects than big jumps, especially with filter cutoffs.
+
+# nizir
+
+a 4 voice harmonizer in max for live (by cashin)
+
+![ss](nizir.png)
+
+takes some audio and adds up to 3 repitched voices on top that can be individually panned to L or R channels. each voice has a range of + or - an octave (12 semitones) and has its own gain, allowing for 2, 3 or 4 voice harmonies.
+
+### quickstart
+
+drop nizir.amxd in any track in ableton
